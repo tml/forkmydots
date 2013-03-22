@@ -3,8 +3,7 @@
 #
 # This is a relatively simple .bashrc file not necessarily intended to be used
 # by everyone who forks the ForkMyDots repository, but maybe still generally
-# useful as a starting point. More complex functionality (sourcing general and
-# machine specific function files) is disabled by default to make it opt-in.
+# useful as a starting point. More complex functionality something something.
 #
 # Please e-mail comments or suggestions to waynr@paunix.org or submit a pull
 # request on github.
