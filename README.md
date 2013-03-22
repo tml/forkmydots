@@ -24,6 +24,7 @@ HOWTO
 =====
 Put machine-specific rcfiles in a subdirectory of .forkmydots/machine/. Then
 run:
+
     $ ./forkmydots/scripts/config-home.sh .forkmydots/machine/<machine_name>
 
 This script is actually currently a little fragile. For now only use relative
