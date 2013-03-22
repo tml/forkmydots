@@ -1,0 +1,172 @@
+#!/bin/bash
+#-------------------------------------------------------------------------------
+#
+# This is a relatively simple .bashrc file not necessarily intended to be used
+# by everyone who forks the ForkMyDots repository, but maybe still generally
+# useful as a starting point. More complex functionality (sourcing general and
+# machine specific function files) is disabled by default to make it opt-in.
+#
+# Please e-mail comments or suggestions to waynr@paunix.org or submit a pull
+# request on github.
+#
+# I am especially interested in advice that makes my shell scripting more
+# compatible with other shells, even though bash is all I really need. 
+#
+#-------------------------------------------------------------------------------
+
+[ -z "$PS1" ] && return
+
+#-------------------------------------------------------------------------------
+# Variables
+
+FORKMYDOTS_DIR="${HOME}/.forkmydots"
+
+#-------------------------------------------------------------------------------
+# Imports
+
+# Provide useful functions for shell sessions. The example shown in this default
+# repository provides a "prompt" function that sets $PS1 with fancy stuff. Why
+# not just include that here in the bashrc? *shrug*. I don't know. Why don't
+# penguins just fly somewhere warmer? 
+#
+# To turn it off, just replace 'true' with 'false'. This would not work in PHP.
+
+if true
+then
+	for each in \
+		${FORKMYDOTS_DIR}/lib/bash/prompt.functions.sh 
+	do
+		[ -f "${each}" ] && . ${each}
+	done
+fi
+
+#-------------------------------------------------------------------------------
+# Exports
+
+export TAR_OPTIONS="--format=posix"
+export VIMRTDIR="/usr/share/vim/vim71"
+export FCEDIT="vim"
+export EDITOR="vim"
+
+# I forgot why I did this, but it has something to do with the fact that I
+# always use tmux everywhere. Honestly, the following four lines are the result
+# of a succession of different attempts and they currently work across about a
+# dozen different laptops, desktops, rack servers, virtual machines, public
+# access shell accounts, and whatnot. You know how it is. 
+#
+# I have not tried this on my Android phone.  Who cares. I recommend
+# experiementing extensively until something wondrous happens.
+
+if [ ! "$TERM" == "screen" ] ;then
+	export TERM="xterm-vi"
+fi
+TERM="screen" # what? ...
+
+#-------------------------------------------------------------------------------
+# PATH
+
+# Only do this if it is not already done. 
+if [ "${SHLVL}" -lt 2 ] || [ ! -z "${SHLVL}" ] ;then
+	for each in \
+		/sbin \
+		/usr/sbin \
+		/usr/local/sbin \
+		${HOME}/.forkmydots/bin \
+		${HOME}/bin
+	do
+		if [ -d "${each}" ] 
+		then
+			export PATH="${PATH}:${each}"
+		fi
+	done
+fi
+
+#-------------------------------------------------------------------------------
+# history file settings 
+
+# I would easily go through about 1000-2000 lines of history a day if it weren't
+# for my extensive use of inputrc's reverse-I-search. Wouldn't it be cool to use
+# some kind of machine learning algorithm to make inputrc perform weighted
+# reverse incremental search with history contents that have higher scores
+# appearing first? No, it wouldn't. 
+
+export HISTSIZE=1000
+export HISTFILESIZE=200000
+export HISTTIMEFORMAT="%Y%m%d %H:%M%S "
+export HISTIGNORE="fg:bg:fc:clear:man*:&:info:history*:fc*:sudo su:printenv:ls:l:jobs*"
+export HISTCONTROL=ignoredups:ignorespace
+
+shopt -s histappend
+
+#-------------------------------------------------------------------------------
+# Aliases
+
+alias l='ls -l '
+alias info='info --vi-keys'
+alias c="pushd "
+alias p="popd "
+alias d='dirs -p -l'
+alias xmms2d="killall xmms2d; xmms2d"
+
+#-------------------------------------------------------------------------------
+# Prompt
+
+# set a fancy prompt (non-color, overwrite the one in /etc/profile)
+# PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+# this needs colorized
+PS1="|\!,\#|\n\w\n\\$"
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+    xterm-color) color_prompt=yes;;
+esac
+
+#force_color_prompt=yes
+
+if [ -n "$force_color_prompt" ]; then
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+	# We have color support; assume it's compliant with Ecma-48
+	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+	# a case would tend to support setf rather than setaf.)
+	color_prompt=yes
+    else
+	color_prompt=
+    fi
+fi
+
+unset color_prompt force_color_prompt
+
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h:\! \w\a\]$PS1"
+    ;;
+*)
+    ;;
+esac
+
+#-------------------------------------------------------------------------------
+# Misc
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    alias grep='grep --color=auto'
+fi
+
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+    . /etc/bash_completion
+fi
+
+prompt
