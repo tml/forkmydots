@@ -39,6 +39,7 @@ TODO
 ====
 * Create script that makes the process of "infecting" another user account with
   this repo a little smoother. This might look something like:
+
     $ remotedots.sh init user@host  
     Install the current git repository in the remote user's home directory 
 
@@ -51,5 +52,6 @@ TODO
 
     $ remotedots.sh push-key user@host  
     Optionally push the local user's ssh public key to that remote repository.
+
 * Create "forkmydots.sh" multi-command script to perform basic management tasks.
 * Style this README to make it look nicer.
