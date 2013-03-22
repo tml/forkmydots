@@ -54,3 +54,4 @@ TODO
     * Optionally push the local user's ssh public key to that remote repository.
 
 * Create "forkmydots.sh" multi-command script to perform basic management tasks.
+* Style this README to make it look nicer.
