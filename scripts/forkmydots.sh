@@ -1,26 +1,46 @@
 #/bin/bash
 
 #-------------------------------------------------------------------------------
-# Dynamically create symlinks appropriate to current machine. This is
-# particularly useful for configuration files like window manager configuration
-# or asoundrc which will usually vary from one machine to another.
+# forkmydots.sh
 #
-# Of course, it doesn't have to be specific to one machine or another. Each
-# "machine_dir" could actually just be different flavors for different
-# uses/users.
+# Author. 
+#  Everyone who ever wrote a bash script.
+#
+# Goal. 
+#  - Create an easily-extensible multi-call script to reconfigure and back up the
+#    configuration settings in one's home directory on a *nix-like machine.
+#  - Make this script compatible with as many shells as possible.
 #
 
-script_dir=${0%/*}
-FORKMYDOTS_DIR="${script_dir}/../"
-LIB_DIR="${FORKMYDOTS_DIR}/lib/bash/"
+#-------------------------------------------------------------------------------
+# Orientation and Libary loading.
+#
 
+script_dir="${0%/*}"
+forkmydots_dir="${script_dir%/*}"
+
+LIB_DIR="${forkmydots_dir}/lib/bash/"
 . ${LIB_DIR}/print.functions.sh
+. ${LIB_DIR}/dots.functions.sh
+
+#-------------------------------------------------------------------------------
+# Sensible defaults.
+#
+
+DOTS_DIR="${forkmydots_dir}/homes/default" 
+
+#-------------------------------------------------------------------------------
+# Option parsing.
+#
 
 while getopts hv OPT; do
 	case "$OPT" in
 	v)
 		echo "`basename $0` version ${VERSION}"
 		exit 0
+		;;
+	d)	
+		DOTS_DIR="${OPTARG}"
 		;;
 	h|\?|*)
 		print_usageXX standard_usageXX >&2
@@ -29,17 +49,19 @@ while getopts hv OPT; do
 	esac
 done
 
-# remove the switches parsed above
+# remove the args parsed above
 shift `expr $OPTIND - 1`
 
-machine_dir="${1}"
+[ "x$#" != "x1" ] && print_usageXX standard_usageXX >&2
+
+command="${1:?}"
 
 #-------------------------------------------------------------------------------
 # Error checking.
 #
 
-if [ ! -d "${machine_dir}" ] ;then
-	echo "ERROR: ${machine_dir} does not exist!"
+if [ ! -d "${DOTS_DIR}" ] ;then
+	echo "ERROR: ${DOTS_DIR} does not exist!"
 	exit -1
 fi
 
@@ -49,47 +71,44 @@ if [ ! "${PWD}" = "${HOME}" ] ;then
 	exit -1
 fi
 
-function link_dots() {
-	specified_dir=${1:?}
+#-------------------------------------------------------------------------------
+# Command execution.
+#
 
-	#---------------------------------------
-	# Obtain list of files using names that are relatively correct for the current
-	# user's home directory.
-	#
-
-	file_list=`find "${specified_dir}" -mindepth 1 -type f -printf "%P "`
-
-	#---------------------------------------
-	# Remove and backup current files, then create symlink to new file.
-	#
-	backup_dir="${FORKMYDOTS_DIR}/backups"
-	backup_dir_date="${backup_dir}/`date --rfc-3339=date`"
-	backup_dir_time="${backup_dir_date}/`date --rfc-3339=seconds | \
-		awk '{print $2}'`"
-
-	mkdir -p ${backup_dir_time}
-
-	for file in ${file_list} ;do
-		[ ! -h "${file}" ] && cp "${file}" "${backup_dir_time}/${file}"
-		ln -sf "${PWD}/${specified_dir}/${file}" "${file}"
-	done 
-}
-
-link_dots "${machine_dir}"
+case ${action} in
+	backup)
+		backup_dots "${DOTS_DIR}"
+		;;
+	install)
+		link_dots "${DOTS_DIR}"
+		;;
+	*)
+		print_usageXX standard_usageXX >&2
+		;;
+esac
 
 #-------------------------------------------------------------------------------
 # Cleanup and documentation.
-# As far as I know, 'rmdir' only removes empty directories.
+# 
 
-rmdir ${backup_dir_time} 2>&1 > /dev/null
-rmdir ${backup_dir_date} 2>&1 > /dev/null
- 
 :<<standard_usageXX
- <machine-dir>
-  machine-dir is a directory containing add-ons for particular machines. For
-  example, consider cases where a single repository is being shared between two
-  computers or even two different users on the same computer with very different
-  .asoundrc needs. One might still wish to track these in a git repository in
-  case the system is re-installed or some kind of crazy other thing happens or
-  even just for posterity's sake. Mmm, sake.
+ [-d <dots-dir>] <command>
+  <command> is fairly self-explanatory. Below is a list of commands along with a
+  short description of each:
+    
+    backup	- Backup all the files in the user's home directory which
+          	  correspond to those found in <dots-dir>.
+    install	- Install files found in <dots-dir> in the user's home
+          	  directory.
+
+  OPTIONS
+
+  -d <dots-dir>, DEFAULT = ${DOTS_DIR}
+    <dots-dir> is a directory containing add-ons for particular machines. For
+    example, consider cases where a single repository is being shared between
+    two computers or even two different users on the same computer with
+    different .asoundrc needs. One might still wish to track these in a git
+    repository in case the system is re-installed or some kind of crazy other
+    thing happens or even just for posterity's sake. Mmm, sake.
+
 standard_usageXX
