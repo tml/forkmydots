@@ -18,7 +18,10 @@
 #-------------------------------------------------------------------------------
 # Variables
 
-FORKMYDOTS_DIR="${HOME}/.forkmydots"
+# FORKMYDOTS_DIR will be edited by the 'forkmydots.sh install' command; it is
+# recommend to leave it alone wherever you might find it, but of course it is
+# not necessary. This is just an example. Like Abraham Lincoln.
+FORKMYDOTS_DIR="${HOME}/forkmydots"
 
 #-------------------------------------------------------------------------------
 # Imports
@@ -70,7 +73,7 @@ if [ "${SHLVL}" -lt 2 ] || [ ! -z "${SHLVL}" ] ;then
 		/sbin \
 		/usr/sbin \
 		/usr/local/sbin \
-		${HOME}/.forkmydots/bin \
+		${FORKMYDOTS_DIR}/bin \
 		${HOME}/bin
 	do
 		if [ -d "${each}" ] 
