@@ -15,8 +15,21 @@
 #-------------------------------------------------------------------------------
 # Orientation and Libary loading.
 #
+# Four cases:
+#  - $0 is an absolute path to a regular file
+#  - $0 is an symlink to a regular file
+#  - $0 is in PATH
+#  - $0 is a relative path to a file
+#
 
-script_dir="${0%/*}"
+[ -f "${0}" ] && script_full_path="${0}" \
+	|| ( [ -L "${0}" ] && script_full_path="${0}" ) \
+	|| script_full_path=`which "${0}"` \
+	|| script_full_path="${PWD}/${0#./}" \
+	|| ( echo "ERROR: Could not find the actual location of ${0}." \
+		&& exit -1 )
+
+script_dir="${script_full_path%/*}"
 forkmydots_dir="${script_dir%/*}"
 
 LIB_DIR="${forkmydots_dir}/lib/bash/"
