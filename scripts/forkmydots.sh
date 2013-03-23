@@ -33,7 +33,7 @@ DOTS_DIR="${forkmydots_dir}/homes/default"
 # Option parsing.
 #
 
-while getopts hv OPT; do
+while getopts d:hv OPT; do
 	case "$OPT" in
 	v)
 		echo "`basename $0` version ${VERSION}"
@@ -75,7 +75,7 @@ fi
 # Command execution.
 #
 
-case ${action} in
+case ${command} in
 	backup)
 		backup_dots "${DOTS_DIR}"
 		;;
