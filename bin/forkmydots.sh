@@ -100,16 +100,24 @@ esac
 # 
 
 :<<standard_usageXX
- [-d <dots-dir>] <command>
+ -[s] [-d <dots-dir>] <command>
   <command> is fairly self-explanatory. Below is a list of commands along with a
   short description of each:
     
     backup	- Backup all the files in the user's home directory which
           	  correspond to those found in <dots-dir>.
     install	- Install files found in <dots-dir> in the user's home
-          	  directory.
+          	  directory. Hard links are used by default if possible,
+          	  otherwise symlinks are used. To override the default behavior,
+          	  use the '-s' option.
 
   OPTIONS
+
+  -s <use-symlinks>, 
+    The default behavior of the 'install' command is to create hard links to
+    dotfiles in the chosen dotfiles repository if possible, symlinks if not.
+    This flag can be used to override that default behavior and force the usage
+    of symlinks.
 
   -d <dots-dir>, DEFAULT = ${DOTS_DIR}
     <dots-dir> is a directory containing add-ons for particular machines. For

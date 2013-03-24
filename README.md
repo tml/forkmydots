@@ -52,10 +52,13 @@ Below are some example applications of the commands offered by the
 ```sh
 # Install dotfiles from forkmydots/homes/default, which is the default dotfiles
 # collection installed with this repository.
-$ ./forkmydots/bin/forkmydots.sh -d forkmydots/homes/<dotsname> install 
+$ ./forkmydots/bin/forkmydots.sh install 
 
 # Install dotfiles from forkmydots/homes/<dotsname>
 $ ./forkmydots/bin/forkmydots.sh -d forkmydots/homes/<dotsname> install 
+
+# Install dotfiles from a backup located in forkmydots/homes/<dotsname>
+$ ./forkmydots/bin/forkmydots.sh -d forkmydots/homes/<dotsname>/backups/2013-03-24_090055 install 
 
 # Install dotfiles from arbitrary directory. All regular files in this directory
 # will be prepended with a period and linked to the user's home directory.
@@ -65,10 +68,15 @@ $ ./forkmydots/bin/forkmydots.sh -d <path/do/dir> install
 ```
 
 ### Backup
+Running a backup creates a new "dotfiles" directory which contains dotfiles
+backed up in a form that can be installed using the **forkmydots.sh** script. It
+only backs up files from the user's home directory which match the dotfiles in
+the dotfiles directory specified on the command line with the "-d" option.
+
 ```sh
 # Find the names of all files in <path/to/dir> relative to that directory, then
 # create backups of the files with those same names in
-# forkmydots/backups/<date>/<time>.
+# <path/to/dir>/backups/YYYY-mm-dd_HHMMSS/.
 $ ./forkmydots/bin/forkmydots.sh -d <path/do/dir> backup
 ```
 
