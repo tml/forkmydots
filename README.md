@@ -30,8 +30,10 @@ information.
    another repo for these eventually, but for now here they are.
 
 ## HOWTO 
+Below are some example applications of the commands offered by the
+**forkmydots.sh** script.
 
-### Install
+### Install dotfiles into the current user's home directory.
 ```sh
 # Install dotfiles from forkmydots/homes/default, which is the default dotfiles
 # collection installed with this repository.
