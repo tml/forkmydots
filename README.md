@@ -2,7 +2,7 @@
 This is my public dotfiles repository with scripts I hope will be useful for
 other people. My primary goal is to make the scripts compatible with the largest
 number of shells and to leave it at that--shell scripts only. No Ruby. No
-Python. As few external dependencies as possible.
+Python. As few external dependencies as possible. 
 
 I also believe that the architecture of this project lends itself particularly
 well to forking; don't like my dotfiles? **forkmydots** by creating your own
@@ -30,22 +30,44 @@ information.
    another repo for these eventually, but for now here they are.
 
 ## HOWTO 
-Put machine-specific rcfiles in a subdirectory of forkmydots/machines/. Then
-run:
 
+### Install
 ```sh
-$ ./forkmydots/bin/forkmydots.sh install .forkmydots/machine/<machine_name>
+# Install dotfiles from forkmydots/homes/default, which is the default dotfiles
+# collection installed with this repository.
+$ ./forkmydots/bin/forkmydots.sh -m forkmydots/homes/<dotsname> install 
+
+# Install dotfiles from forkmydots/homes/<dotsname>
+$ ./forkmydots/bin/forkmydots.sh -m forkmydots/homes/<dotsname> install 
+
+# Install dotfiles from forkmydots/machines/<dotsname>
+$ ./forkmydots/bin/forkmydots.sh -m forkmydots/machine/<dotsname> install
+
+# Install dotfiles from arbitrary directory. All regular files in this directory
+# will be prepended with a period and linked to the user's home directory.
+$ ./forkmydots/bin/forkmydots.sh -m <path/do/dir> install
+
 ```
+
+### Backup
+```sh
+# Find the names of all files in <path/to/dir> relative to that directory, then
+# create backups of the files with those same names in
+# forkmydots/backups/<date>/<time>.
+$ ./forkmydots/bin/forkmydots.sh -m <path/do/dir> backup
+```
+
 ## TODO 
 * Create script that makes the process of "infecting" another user account with
   this repo a little smoother. This might look something like:
-
 ```sh
 # Perform initial checkouts in the remote repository; should back up existing
 # files using git stash before doing this.
-$ remotedots.sh checkout user@host  
+$ forkmydots.sh checkout user@host  
 # Add the new repository as a remote for the current repository.
-$ remotedots.sh add-remote user@host  
+$ forkmydots.sh add-remote user@host  
 # Optionally push the local user's ssh public key to that remote repository.
-$ remotedots.sh push-key user@host  
+$ forkmydots.sh push-key user@host  
 ```
+* Refine the backup behavior so that backups for a given dotfiles directory are
+  stored in a subdirectory of that dotfile directory.
