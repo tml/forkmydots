@@ -11,26 +11,37 @@ set_var() {
 }
 
 get_dot_files() {
-	find "${1:?}" \
+	local find_path="${1:?}"
+	find_path=${find_path%/}
+
+	find ${find_path} \
 		-mindepth 1 \
 		-type f \
 		! -name "*.swp" \
+		! -path "${find_path}/backups*" \
 		-printf "%P "
 }
 
 backup_dots() {
-	local backup_dir="${forkmydots_dir}/backups"
-	local date=`date --rfc-3339=date`
-	local time=`date --rfc-3339=seconds | \
-		awk '{print $2}'`
-	backup_dir="${backup_dir}/${date}/${time}/"
-	mkdir -p ${backup_dir}
-
 	local file_list=`get_dot_files ${1:?}`
+	local date=`date +%Y-%m-%d`
+	local time=`date +%H%M%S`
+	local backup_dir="${DOTS_DIR}/backups/${date}_${time}/"
+	local dot_file=""
+	local file_dir=""
+
+	set -x
 	for file in ${file_list} ;do
-		local dot_file=".${file}"
-		[ ! -h "${dot_file}" ] && cp "${dot_file}" "${backup_dir}/${file}"
+		dot_file=".${file}"
+		file_dir="${file%/*}"
+		if [ ! -h "${dot_file}" ] ;then
+			mkdir -p ${backup_dir} 
+			[ ! "${file}" = "${file_dir}" ] \
+				&& mkdir -p ${backup_dir}/${file_dir}
+			cp "${dot_file}" "${backup_dir}/${file}" 
+		fi
 	done
+	set +x
 }
 
 
@@ -39,7 +50,6 @@ link_dots() {
 	local file_list=`get_dot_files ${dot_dir:?}`
 	local dot_dir_dev=`get_device ${dot_dir}`
 	local home_dir_dev=`get_device ./`
-
 	local LNARGS="-Pf"
 	local file_dir=""
 
