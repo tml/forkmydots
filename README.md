@@ -1,5 +1,4 @@
-forkmydots
-==========
+# forkmydots
 
 This is my public dotfiles repository with scripts I hope will be useful for other people.
 
@@ -20,43 +19,37 @@ will merge them and use them everywhere.
 Otherwise...*forkmydots*! Make them your own. Eat some broccoli. Write an essay.
 Climb a tree. Drink some water. Go for a swim. Okay, enough of that nonsense.
 
-HOWTO 
-=====
+## HOWTO 
 Put machine-specific rcfiles in a subdirectory of .forkmydots/machine/. Then
 run:
 
-    $ ./forkmydots/scripts/config-home.sh .forkmydots/machine/<machine_name>
+```sh
+$ ./forkmydots/scripts/config-home.sh .forkmydots/machine/<machine_name>
+```
 
 This script is actually currently a little fragile. For now only use relative
 directory names for when specifying the path to the maching-specific rc files.
 
-HUH? 
-====
+## HUH? 
 I also included some other scripts in .forkmydots/machin/scripts/. No particular
 reason for this, they were just part of the old dotfiles repo before I
 reinitialized to get eliminate some personal information from the history.
 
-TODO 
-====
+## TODO 
 * Create script that makes the process of "infecting" another user account with
   this repo a little smoother. This might look something like:
 
-    $ remotedots.sh init user@host  
-
-Install the current git repository in the remote user's home directory 
-
-    $ remotedots.sh checkout user@host  
-
-Perform initial checkouts in the remote repository; should back up existing
-files using git stash before doing this.
-
-    $ remotedots.sh add-remote user@host  
-    
-Add the new repository as a remote for the current repository.
-
-    $ remotedots.sh push-key user@host  
-
-Optionally push the local user's ssh public key to that remote repository.
+```sh
+# Install the current git repository in the remote user's home directory 
+$ remotedots.sh init user@host  
+# Perform initial checkouts in the remote repository; should back up existing
+# files using git stash before doing this.
+$ remotedots.sh checkout user@host  
+# Add the new repository as a remote for the current repository.
+$ remotedots.sh add-remote user@host  
+# Optionally push the local user's ssh public key to that remote repository.
+$ remotedots.sh push-key user@host  
+```
 
 * Create "forkmydots.sh" multi-command script to perform basic management tasks.
 * Style this README to make it look nicer.
