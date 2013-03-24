@@ -35,17 +35,17 @@ information.
 ```sh
 # Install dotfiles from forkmydots/homes/default, which is the default dotfiles
 # collection installed with this repository.
-$ ./forkmydots/bin/forkmydots.sh -m forkmydots/homes/<dotsname> install 
+$ ./forkmydots/bin/forkmydots.sh -d forkmydots/homes/<dotsname> install 
 
 # Install dotfiles from forkmydots/homes/<dotsname>
-$ ./forkmydots/bin/forkmydots.sh -m forkmydots/homes/<dotsname> install 
+$ ./forkmydots/bin/forkmydots.sh -d forkmydots/homes/<dotsname> install 
 
 # Install dotfiles from forkmydots/machines/<dotsname>
-$ ./forkmydots/bin/forkmydots.sh -m forkmydots/machine/<dotsname> install
+$ ./forkmydots/bin/forkmydots.sh -d forkmydots/machine/<dotsname> install
 
 # Install dotfiles from arbitrary directory. All regular files in this directory
 # will be prepended with a period and linked to the user's home directory.
-$ ./forkmydots/bin/forkmydots.sh -m <path/do/dir> install
+$ ./forkmydots/bin/forkmydots.sh -d <path/do/dir> install
 
 ```
 
@@ -54,7 +54,7 @@ $ ./forkmydots/bin/forkmydots.sh -m <path/do/dir> install
 # Find the names of all files in <path/to/dir> relative to that directory, then
 # create backups of the files with those same names in
 # forkmydots/backups/<date>/<time>.
-$ ./forkmydots/bin/forkmydots.sh -m <path/do/dir> backup
+$ ./forkmydots/bin/forkmydots.sh -d <path/do/dir> backup
 ```
 
 ## TODO 
