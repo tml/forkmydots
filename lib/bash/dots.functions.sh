@@ -38,9 +38,19 @@ link_dots() {
 	local dot_dir="${1:?}"
 	local file_list=`get_dot_files ${dot_dir:?}`
 
+	local dot_dir_dev=`get_device ${dot_dir}`
+	local home_dir_dev=`get_device ./`
+	local LNARGS=""
+
+	if [ "${dot_dir_dev}" = "${home_dir_dev}" ] ;then
+		LNARGS="-Pf"
+	else
+		LNARGS="-sf"
+	fi
+
 	for file in ${file_list} ;do
-		ln -sf "${PWD}/${dot_dir}/${file}" ".${file}"
-		set_var "FORKMYDOTS_DIR" "${forkmydots_dir}" ".${file}"
+		set_var "FORKMYDOTS_DIR" "${forkmydots_dir}" "${dot_dir}/${file}"
+		ln ${LNARGS} "${dot_dir}/${file}" ".${file}"
 	done 
 }
 

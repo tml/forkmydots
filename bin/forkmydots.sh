@@ -22,8 +22,11 @@ script_dir="${script_full_path%/*}"
 forkmydots_dir="${script_dir%/*}"
 
 LIB_DIR="${forkmydots_dir}/lib/bash/"
+. ${LIB_DIR}/sys.functions.sh
 . ${LIB_DIR}/print.functions.sh
 . ${LIB_DIR}/dots.functions.sh
+
+system_info
 
 #-------------------------------------------------------------------------------
 # Sensible defaults.
