@@ -37,14 +37,14 @@ backup_dots() {
 link_dots() {
 	local dot_dir="${1:?}"
 	local file_list=`get_dot_files ${dot_dir:?}`
-
 	local dot_dir_dev=`get_device ${dot_dir}`
 	local home_dir_dev=`get_device ./`
-	local LNARGS=""
 
-	if [ "${dot_dir_dev}" = "${home_dir_dev}" ] ;then
-		LNARGS="-Pf"
-	else
+	local LNARGS="-Pf"
+	local file_dir=""
+
+	if [ ! "${dot_dir_dev}" = "${home_dir_dev}" ] \
+		|| [ ! "${USE_SYMLINKS}x" = "x" ] ;then
 		LNARGS="-sf"
 	fi
 

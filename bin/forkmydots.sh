@@ -38,11 +38,14 @@ DOTS_DIR="${forkmydots_dir}/homes/default"
 # Option parsing.
 #
 
-while getopts d:hv OPT; do
+while getopts sd:hv OPT; do
 	case "$OPT" in
 	v)
 		echo "`basename $0` version ${VERSION}"
 		exit 0
+		;;
+	s)	
+		USE_SYMLINKS=1
 		;;
 	d)	
 		DOTS_DIR="${OPTARG}"
