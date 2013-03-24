@@ -50,6 +50,9 @@ link_dots() {
 
 	for file in ${file_list} ;do
 		set_var "FORKMYDOTS_DIR" "${forkmydots_dir}" "${dot_dir}/${file}"
+		file_dir="${file%/*}"
+		[ ! "${file}" = "${file_dir}" ] \
+			&& mkdir -p ".${file_dir}"
 		ln ${LNARGS} "${dot_dir}/${file}" ".${file}"
 	done 
 }
