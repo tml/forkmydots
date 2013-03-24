@@ -6,17 +6,34 @@ The primary goal is to make the scripts compatible with the largest
 number of shells and to leave it at that--shell scripts only. No Ruby. No
 Python. As few external dependencies as possible. 
 
-The architecture of projects like this (mine certainly is not the first) lends
+The architecture of projects like this (this is certainly not the first) lends
 itself particularly well to forking; don't like the default dotfiles?
-**forkmydots** by creating your own subdirectiroy of **homes/**. You can still
-merge changes from upstream when changes are made to the basic scripts.
+**forkmydots** by creating your own subdirectiroy of **homes/**. This way you 
+can still easily merge changes from upstream when changes are made to the basic
+scripts.
                           
-See the **Layout** **HOWTO** section for more information.
+See the **Layout** or **HOWTO** section for more information.
 
 ## Features
 * Back up your existing dotfiles before clobbering them with the install script.
 * Architecture lends itself well to forking using organizational strategy that
-  minimizes the risk of name collisions.
+  minimizes the risk of merge conflicts.
+* Use hard links to dotfiles in the **forkmydots** project directory, but only
+  IF this directory is located on the same filesystem as your home directory;
+  otherwise use symlinks. Either way, this allows you to modify your dotfiles in
+  place and track changes in the git repository at the same time.
+* Well-documented and easily extensible management script.
+* Install script currently replaces "^FORKMYDOTS\_DIR=.\*$" in any dotfile with
+  the absolute location of the **forkmydots** project using sed. Actually, maybe
+  this is a bug...? But the principle of modifying dotfiles before installing
+  them could be useful. Like orange tapioca.
+
+### Planned
+* Easily push repo to account on a remote system and run install commands
+  remotely so your dots are ready and waiting on that remote system next time
+  you log in.
+
+Got any other ideas? **forkmydots**, implement them, and let me know :)
 
 ## Getting Started
 ```sh
