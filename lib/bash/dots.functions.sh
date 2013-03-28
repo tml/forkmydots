@@ -67,4 +67,12 @@ link_dots() {
 	done 
 }
 
+push_dots() {
+	local dot_dir="${1:?}"
+	local host="${2:?}"
+	local sshcmd="./forkmydots/bin/forkmydots.sh -d \${HOME}/forkmydots/homes/default backup  && ./forkmydots/bin/forkmydots.sh -d \${HOME}/forkmydots/homes/default install"
+
+	scp -r ${forkmydots_dir} ${host}:./${formydots_dir%%*/}
+	ssh ${host} "${sshcmd}"
+}
 

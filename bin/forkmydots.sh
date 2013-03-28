@@ -38,11 +38,14 @@ DOTS_DIR="${forkmydots_dir}/homes/default"
 # Option parsing.
 #
 
-while getopts sd:hv OPT; do
+while getopts d:hr:sv OPT; do
 	case "$OPT" in
 	v)
 		echo "`basename $0` version ${VERSION}"
 		exit 0
+		;;
+	r)	
+		FORKMYDOTS_HOST="${OPTARG}"
 		;;
 	s)	
 		USE_SYMLINKS=1
@@ -90,6 +93,11 @@ case ${command} in
 	install)
 		link_dots "${DOTS_DIR}"
 		;;
+	remote-add)
+		[ -z "${FORKMYDOTS_HOST}" ] \
+			&& print_usageXX standard_usageXX && exit -1
+		push_dots "${DOTS_DIR}" "${FORKMYDOTS_HOST}"
+		;;
 	*)
 		print_usageXX standard_usageXX >&2
 		;;
@@ -100,7 +108,7 @@ esac
 # 
 
 :<<standard_usageXX
- -[s] [-d <dots-dir>] <command>
+ -[s] [-d <dots-dir>] [-r <remote-host>] <command>
   <command> is fairly self-explanatory. Below is a list of commands along with a
   short description of each:
     
@@ -126,5 +134,11 @@ esac
     different .asoundrc needs. One might still wish to track these in a git
     repository in case the system is re-installed or some kind of crazy other
     thing happens or even just for posterity's sake. Mmm, sake.
+
+  -d <remote-host>, remote-* commands fail without this option
+    <remote-host> is of the form <USER>@<HOST> where <USER> is the username
+    whose home directory is to have the given forkmydots-compatible dotfiles
+    directory installed and <HOST> is the IP addres or hostname of the target
+    machine.
 
 standard_usageXX
