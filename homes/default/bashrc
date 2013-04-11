@@ -59,10 +59,15 @@ export EDITOR="vim"
 # I have not tried this on my Android phone.  Who cares. I recommend
 # experiementing extensively until something wondrous happens.
 
-if [ ! "$TERM" == "screen" ] ;then
-	export TERM="xterm-vi"
-fi
-TERM="screen" # what? ...
+#if [ ! "$TERM" == "screen" ] ;then
+	#export TERM="xterm-vi"
+#fi
+#TERM="screen" # what? ...
+
+# side note: it has been pointed out to me recently that setting TERM in a shell
+# configuration file is bad form. Why is this? Well let's see...bash is a
+# shell...not a terminal emulator. So...leave terminal emulator settings to the
+# terminal emulators!
 
 #-------------------------------------------------------------------------------
 # PATH
