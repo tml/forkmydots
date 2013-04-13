@@ -1,13 +1,6 @@
 set nocompatible	" Set no compatible with vi mode
-set showcmd		" Show (partial) command in status line.
-set ignorecase		" Do case insensitive matching
-set modeline
-set bs=indent,eol,start
 
-" If using a dark background within the editing area and syntax highlighting
-" turn on this option as well
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Visual {{{
 colorscheme elflord
 set background=dark
 set scrolloff=999
@@ -18,8 +11,15 @@ set laststatus=2
 if &t_Co > 1 		
 	syntax enable
 endif
+" }}}
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Behavioral {{{
+
+set showcmd		" Show (partial) command in status line.
+set ignorecase		" Do case insensitive matching
+set modeline
+set bs=indent,eol,start
+
 set showmatch		" Show matching brackets.
 set textwidth=80
 set fo=tcq
@@ -30,32 +30,37 @@ if has("autocmd")
   filetype plugin indent on
 endif
 
-"filetype plugin on
-"set grepprg=grep\ -nH\ $*
-"filetype indent on
-"let g:tex_flavor='latex'
+augroup filetype_vim
+	autocmd!
+	autocmd FileType vim setlocal foldmethod=marker
+augroup END
+" }}}
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Mappings
+" Mappings {{{
 let mapleader = "-"
 
-" hakyll site previewer
-nnoremap <leader>hg :!rm -rf /var/www/rainyday/* && hyde gen -d /var/www/rainyday<cr>
-nnoremap <leader>hp :!./hakyll preview 9000<cr>
-nnoremap <leader>hc :!./hakyll clean<cr>
-nnoremap <leader>hb :!./hakyll rebuild && rm -rf /var/www/jumpshop/* && cp -r _site/* /var/www/jumpshop<cr>
+" colorscheme setting
+nnoremap <leader>cz :colors zellner <cr>
+nnoremap <leader>ce :colors elflord <cr>
 
-nnoremap <leader>pp :! python %<CR>
-nnoremap <leader>pd :! python manage.py runserver<CR>
-nnoremap <leader>gac :! git add -p % && git commit <CR>
+" hyde site previewer
+nnoremap <leader>hg :!rm -rf /var/www/rainyday/* && hyde gen -d /var/www/rainyday<cr>
 
 " vimrc quick edits
 nnoremap <leader>ev :split $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 
-" End Mappings
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" misc
+nnoremap <leader>pp :! python %<CR>
+nnoremap <leader>gac :! git add -p % && git commit <CR>
 
+" }}} End Mappings
+
+" System Dependent {{{
+" Sub-blocks in this block ought to check for commands available on the current
+" system before setting bindings.
+
+" cscope bindings {{{
 if has('cscope')
 	set cscopetag cscopeverbose
 
@@ -114,8 +119,9 @@ if has('cscope')
 "		\:vert scs find d <C-R>=expand("<cword>")<CR><CR>
 
 endif
+" }}}
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" xsel bindings {{{
 " make various buffers available inside vim when an Xserver is running.
 
 " if the system has 'xsel', use it!
@@ -136,3 +142,6 @@ endif
 	:ca pz Pz
 	:ca px Px
 "endif
+" }}}
+
+" }}}
