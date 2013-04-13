@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. ${LIB_DIR}/git.functions.sh
+
 set_var() {
 	local var_name=${1:?}
 	local var_value=${2:?}
@@ -44,7 +46,6 @@ backup_dots() {
 	set +x
 }
 
-
 link_dots() {
 	local dot_dir="${1:?}"
 	local file_list=`get_dot_files ${dot_dir:?}`
@@ -70,9 +71,22 @@ link_dots() {
 push_dots() {
 	local dot_dir="${1:?}"
 	local host="${2:?}"
-	local sshcmd="./forkmydots/bin/forkmydots.sh -d \${HOME}/forkmydots/homes/default backup  && ./forkmydots/bin/forkmydots.sh -d \${HOME}/forkmydots/homes/default install"
 
-	scp -r ${forkmydots_dir} ${host}:./${formydots_dir%%*/}
+	local remote_reldir="${forkmydots_dir%%*/}"
+	local new_remote="${host}:./${remote_reldir}"
+
+	local origin=`git_origin ${forkmydots_dir}`
+	local sshcmd=''
+	read -r -d '' sshcmd <<-HEREDOC
+./${remote_reldir}/bin/forkmydots.sh -d \${HOME}/${remote_reldir}/homes/default backup  
+./${remote_reldir}/bin/forkmydots.sh -d \${HOME}/${remote_reldir}/homes/default install
+pushd ${remote_reldir}
+git remote add origin ${origin}
+popd
+HEREDOC
+
+	scp -r ${forkmydots_dir} ${new_remote}
 	ssh ${host} "${sshcmd}"
+	git remote add "${host%*@}-${host#@*}" ${new_remote}
 }
 
