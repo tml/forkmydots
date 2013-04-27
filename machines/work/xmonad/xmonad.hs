@@ -2,6 +2,7 @@
 import XMonad
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.ManageHelpers
 import XMonad.Layout.Accordion
 import XMonad.Layout.Grid
 import XMonad.Layout.NoBorders
@@ -14,14 +15,15 @@ import XMonad.Util.Run(unsafeSpawn,spawnPipe)
 import XMonad.Util.EZConfig(additionalKeys)
 import System.IO
 
+import qualified XMonad.StackSet as W
+
 main = do
     unsafeSpawn "trayer --edge top --align right --SetDockType true --SetPartialStrut true  --expand true --width 10 --transparent true --tint 0x191970 --height 12 &"
     unsafeSpawn "xloadimage -onroot visual/lush-summer_louisville_kentucky.jpg &"
     unsafeSpawn "xscreensaver -no-splash &"
-    unsafeSpawn "evolution"
     xmproc <- spawnPipe "xmobar"
     xmonad $ defaultConfig
-	{ manageHook = manageDocks <+> manageHook defaultConfig
+	{ manageHook = manageDocks <+> myManageHook
 	, workspaces = ["mail","minicom","web","work","schpcb"] ++
 			map show [6..7 :: Int] ++ ["im"] ++ map show [9] 
 	, layoutHook =	avoidStruts  $  
@@ -70,4 +72,13 @@ main = do
 --                  noBorders Full  |||
 --                  Mirror tiled    |||
 --                  Accordion
+
+myManageHook :: ManageHook
+myManageHook = composeAll . concat $
+    [ [isDialog		--> doFloat ]
+    , [title =? t --> doFloat | t <- myTFloats]
+    ]
+    where
+	myTFloats = ["Funky Tester"]
+
 
