@@ -37,6 +37,14 @@ augroup END
 " }}}
 
 " Mappings {{{
+
+" Leaderless {{{
+
+inoremap jk <esc>
+
+" }}}
+
+" Leadered {{{
 let mapleader = "-"
 
 " colorscheme setting
