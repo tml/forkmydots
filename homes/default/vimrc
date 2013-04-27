@@ -47,12 +47,19 @@ nnoremap <leader>ce :colors elflord <cr>
 nnoremap <leader>hg :!rm -rf /var/www/rainyday/* && hyde gen -d /var/www/rainyday<cr>
 
 " vimrc quick edits
-nnoremap <leader>ev :split $MYVIMRC<cr>
-nnoremap <leader>sv :source $MYVIMRC<cr>
+nnoremap <leader>ve :split $MYVIMRC<cr>
+nnoremap <leader>vs :source $MYVIMRC<cr>
+
+" save current session and exit
+nnoremap <leader>ss :mks! vim.session<cr>
+
+" set foldmethod=indent on all windows in all tabs
+nnoremap <leader>fi :tabdo windo set foldmethod=indent<cr>
 
 " misc
 nnoremap <leader>pp :! python %<CR>
 nnoremap <leader>gac :! git add -p % && git commit <CR>
+" }}}
 
 " }}} End Mappings
 
