@@ -72,8 +72,8 @@ push_dots() {
 	local dot_dir="${1:?}"
 	local host="${2:?}"
 
-	local remote_reldir="${forkmydots_dir%%*/}"
-	local new_remote="${host}:./${remote_reldir}"
+	local remote_reldir="${forkmydots_dir##*/}"
+	local new_remote="${host}:${remote_reldir}"
 
 	local origin=`git_origin ${forkmydots_dir}`
 	local sshcmd=''
