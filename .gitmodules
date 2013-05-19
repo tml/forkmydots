@@ -1,0 +1,6 @@
+[submodule "homes/vim-python-plugin"]
+	path = homes/vim-python-plugin
+	url = https://github.com/waynr/vim-python-ftplugin.git
+[submodule "homes/vim-python-plugin/vim"]
+	path = homes/vim-python-plugin/vim
+	url = https://github.com/waynr/vim-python-ftplugin.git
