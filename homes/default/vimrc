@@ -1,7 +1,7 @@
 set nocompatible	" Set no compatible with vi mode
 
 " Visual {{{
-colorscheme elflord
+colorscheme desert
 set background=dark
 set scrolloff=999
 set statusline=%<%f%=\ [%1*%M%*%n%R%H]\ %-19(%3l,%02c%03V%)%O'%02b'
@@ -50,6 +50,7 @@ let mapleader = "-"
 " colorscheme setting
 nnoremap <leader>cz :colors zellner <cr>
 nnoremap <leader>ce :colors elflord <cr>
+nnoremap <leader>cd :colors desert <cr>
 
 " hyde site previewer
 nnoremap <leader>hg :!rm -rf /var/www/rainyday/* && hyde gen -d /var/www/rainyday<cr>

@@ -135,7 +135,7 @@ esac
     repository in case the system is re-installed or some kind of crazy other
     thing happens or even just for posterity's sake. Mmm, sake.
 
-  -d <remote-host>, remote-* commands fail without this option
+  -r <remote-host>, remote-* commands fail without this option
     <remote-host> is of the form <USER>@<HOST> where <USER> is the username
     whose home directory is to have the given forkmydots-compatible dotfiles
     directory installed and <HOST> is the IP addres or hostname of the target
