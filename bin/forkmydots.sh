@@ -32,7 +32,8 @@ system_info
 # Sensible defaults.
 #
 
-DOTS_DIR="${forkmydots_dir}/homes/default" 
+DEFAULT_DOTS="homes/default"
+DOTS_DIR="${forkmydots_dir}/${DEFAULT_DOTS}"
 
 #-------------------------------------------------------------------------------
 # Option parsing.
