@@ -93,9 +93,14 @@ function prompt() {
 	}
 
 	function check_acpi_cap() {
-		( [ `which acpi` = "" ] \
-			|| `which acpi` 2>&1 | grep -i "no support" ) \
-			&& return 1 
+		if [ `which acpi` = "" ] ;then
+			return 1
+		fi
+
+		if (`which acpi` 2>&1 | grep -i "no support") ;then
+			return 1 
+		fi
+
 		return 0
 	}
 
