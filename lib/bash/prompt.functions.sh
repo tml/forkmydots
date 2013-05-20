@@ -92,7 +92,7 @@ function prompt() {
 		PWR_STATUS="| \[${color}\]${batt_stat}\[${RST}\] "
 	}
 
-	if [ -x `which acpi` ] ;then
+	if [ ! "`which acpi`" = "" ] ;then
 		prompt_power
 	fi
 	
