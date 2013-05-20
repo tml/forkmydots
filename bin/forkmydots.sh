@@ -93,7 +93,12 @@ case ${command} in
 	install)
 		link_dots "${DOTS_DIR}"
 		;;
-	remote-add)
+	remote-clone)
+		[ -z "${FORKMYDOTS_HOST}" ] \
+			&& print_usageXX standard_usageXX && exit -1
+		remote_clone_dots "${DOTS_DIR}" "${FORKMYDOTS_HOST}"
+		;;
+	remote-push)
 		[ -z "${FORKMYDOTS_HOST}" ] \
 			&& print_usageXX standard_usageXX && exit -1
 		push_dots "${DOTS_DIR}" "${FORKMYDOTS_HOST}"
@@ -118,6 +123,10 @@ esac
           	  directory. Hard links are used by default if possible,
           	  otherwise symlinks are used. To override the default behavior,
           	  use the '-s' option.
+    remote-push	- Push repository to remote host and configure it once there;
+		  Set this repository's "origin" remote as the remote
+		  repository's "origin", translating to http:// protocol by
+		  default.  
 
   OPTIONS
 

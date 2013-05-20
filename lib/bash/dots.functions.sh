@@ -32,7 +32,6 @@ backup_dots() {
 	local dot_file=""
 	local file_dir=""
 
-	set -x
 	for file in ${file_list} ;do
 		dot_file=".${file}"
 		file_dir="${file%/*}"
@@ -43,7 +42,6 @@ backup_dots() {
 			cp "${dot_file}" "${backup_dir}/${file}" 
 		fi
 	done
-	set +x
 }
 
 link_dots() {
@@ -75,18 +73,29 @@ push_dots() {
 	local remote_reldir="${forkmydots_dir##*/}"
 	local new_remote="${host}:${remote_reldir}"
 
-	local origin=`git_origin ${forkmydots_dir}`
+	local origin=`git_http_origin ${forkmydots_dir}`
 	local sshcmd=''
 	read -r -d '' sshcmd <<-HEREDOC
+git clone --recursive forkmydots.bundle forkmydots
 ./${remote_reldir}/bin/forkmydots.sh -d \${HOME}/${remote_reldir}/homes/default backup  
 ./${remote_reldir}/bin/forkmydots.sh -d \${HOME}/${remote_reldir}/homes/default install
 pushd ${remote_reldir}
-git remote add origin ${origin}
+git remote set-url origin "${origin}"
+git fetch origin
+git checkout -b master origin/master
 popd
 HEREDOC
-
-	scp -r ${forkmydots_dir} ${new_remote}
+	pushd ${forkmydots_dir}
+	git bundle create forkmydots.bundle HEAD
+	scp -r forkmydots.bundle "${host}:"
 	ssh ${host} "${sshcmd}"
+	git remote rm "${host%*@}-${host#@*}"
 	git remote add "${host%*@}-${host#@*}" ${new_remote}
+	rm -f forkmydots.bundle
+	popd
 }
 
+remote_clone_dots() {
+	echo "blah"
+
+}
