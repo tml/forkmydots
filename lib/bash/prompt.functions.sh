@@ -92,7 +92,16 @@ function prompt() {
 		PWR_STATUS="| \[${color}\]${batt_stat}\[${RST}\] "
 	}
 
-	if [ ! "`which acpi`" = "" ] ;then
+	function check_acpi_cap() {
+		( [ `which acpi` = "" ] \
+			|| `which acpi` 2>&1 | grep -i "no support" ) \
+			|| return 1 
+		return 1
+	}
+
+	check_acpi_cap 2>&1> /dev/null
+
+	if [ "$?" = "0" ] ;then
 		prompt_power
 	fi
 	
