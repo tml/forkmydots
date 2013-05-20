@@ -93,7 +93,7 @@ function prompt() {
 	}
 
 	function check_acpi_cap() {
-		if [ `which acpi` = "" ] ;then
+		if [ "`which acpi`" = "" ] ;then
 			return 1
 		fi
 
@@ -104,9 +104,7 @@ function prompt() {
 		return 0
 	}
 
-	check_acpi_cap 2>&1> /dev/null
-
-	if [ "$?" = "0" ] ;then
+	if (check_acpi_cap 2>&1> /dev/null) ;then
 		prompt_power
 	fi
 	
