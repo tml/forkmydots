@@ -4,12 +4,12 @@
 #
 git_origin() {
 	local working_tree_dir="${1:?}"
-	pushd ${working_tree_dir} 2&>1 > /dev/null
+	pushd ${working_tree_dir} 2>&1 > /dev/null
 	local origin=`git remote -v \
 		| awk '/^origin/ {print $2}' \
 		| uniq` 
 	echo ${origin}
-	popd 2&>1 > /dev/null
+	popd 2>&1 > /dev/null
 }
 
 ## Fill out GITORIGIN_* variables for use elsewhere.
@@ -52,7 +52,7 @@ git_split_remote() {
 #
 git_http_origin() {
 	local working_tree_dir="${1:?}"
-	git_split_remote ${working_tree_dir} 2&>1 > /dev/null
+	git_split_remote ${working_tree_dir} 2>&1 > /dev/null
 	echo -n "http://${GITORIGIN_HOSTNAME}/${GITORIGIN_HOSTPATH}"
 }
 
@@ -60,7 +60,7 @@ git_http_origin() {
 #
 git_ssh_origin() {
 	local working_tree_dir="${1:?}"
-	git_split_remote ${working_tree_dir} 2&>1 > /dev/null
+	git_split_remote ${working_tree_dir} 2>&1 > /dev/null
 	echo -n "${GITORIGIN_USER}@${GITORIGIN_HOSTNAME}:${GITORIGIN_HOSTPATH}"
 }
 
@@ -68,6 +68,6 @@ git_ssh_origin() {
 #
 git_git_origin() {
 	local working_tree_dir="${1:?}"
-	git_split_remote ${working_tree_dir} 2&>1 > /dev/null
+	git_split_remote ${working_tree_dir} 2>&1 > /dev/null
 	echo -n "git://${GITORIGIN_HOSTNAME}/${GITORIGIN_HOSTPATH}"
 }
