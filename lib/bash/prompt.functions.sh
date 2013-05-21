@@ -44,7 +44,7 @@ prompt() {
 	local HY='\[\e[0;93m\]'      # Yellow
 	local HB='\[\e[0;94m\]'        # Blue
 	#local HM='\[\e[0;95m\]'      # Purple
-	#local HC='\[\e[0;96m\]'        # Cyan
+	local HC='\[\e[0;96m\]'        # Cyan
 	#local HW='\[\e[0;97m\]'       # White
 	
 	# Bold High Intensty
@@ -110,6 +110,6 @@ prompt() {
 		prompt_power
 	fi
 
-	PS1="${PWR_STATUS}| ${UR}\!${RST},${UR}\#${RST} | ${HY}${BR}\u@\H${RST} |\n${HB}\w${RST} \n\\$"
+	PS1="${PWR_STATUS}| ${UR}\!${RST},${UR}\#${RST} | ${HY}${BR}\u${RST}@${HC}${BR}\H${RST} |\n${HB}\w${RST} \n\\$"
 
 }
